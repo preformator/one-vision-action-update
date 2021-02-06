@@ -7,12 +7,30 @@ inputs:
     description: 'branch name'
     default: 'No branch provided'
     required: true
+  builderImage: 
+    description: 'builderImage name'
+    default: 'No builderImage provided'
+    required: false
 runs:
   using: "composite"
   
   steps: 
     - name: Check if builder image is up to date with deps from the repo
       run: |
+        BUILDER_IMAGE=${{ inputs.builderImage }}
+
+        if test $BUILDER_IMAGE; then
+            echo "Checking if builder image is up to date with deps from the repo..."
+
+            PIPELINE_RESULT=$(curl -F 'data=@package.json' http://34.91.15.31:1000/check?name=$BUILDER_IMAGE)
+
+            if test $PIPELINE_RESULT; then
+                echo "Please Update builder pipeline... !!!"
+                echo $PIPELINE_RESULT
+                exit 1
+            fi
+        fi
+
         SERVICE_NAME=${{ inputs.name }}
         DOCKER_IMAGE="$SERVICE_NAME:latest"
 
