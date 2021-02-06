@@ -4,8 +4,10 @@ inputs:
     default: 'No name provided'
 runs:
   using: "composite"
+  
   steps: 
-    - run: |
+    - name: Check if builder image is up to date with deps from the repo
+      run: |
         SERVICE_NAME=${{ inputs.name }}
         DOCKER_IMAGE="$SERVICE_NAME:latest"
 
@@ -24,3 +26,4 @@ runs:
         fi
         
         echo "Completed."
+      shell: bash
