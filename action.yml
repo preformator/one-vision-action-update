@@ -2,6 +2,11 @@ inputs:
   name: 
     description: 'Your name'
     default: 'No name provided'
+    required: true
+  branch: 
+    description: 'branch name'
+    default: 'No branch provided'
+    required: true
 runs:
   using: "composite"
   
@@ -13,7 +18,7 @@ runs:
 
         echo "Service update is running for $SERVICE_NAME - $DOCKER_IMAGE"
 
-        docker build --build-arg branch=$branch -t $SERVICE_NAME .
+        docker build --build-arg branch=${{ inputs.branch }} -t $SERVICE_NAME .
         docker tag $SERVICE_NAME localhost:5000/$DOCKER_IMAGE
         docker push localhost:5000/$DOCKER_IMAGE
 
