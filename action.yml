@@ -54,6 +54,9 @@ runs:
         else
             echo "Service is not running, creating new one..."
             CMD="docker service create --with-registry-auth --name $SERVICE_NAME --network=host ${{ inputs.additionalServiceCreationArgs }} localhost:5000/$DOCKER_IMAGE"
+            
+            echo $CMD
+            
             eval $CMD
         fi
         
