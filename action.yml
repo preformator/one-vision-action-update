@@ -13,7 +13,7 @@ inputs:
     required: false
   additionalServiceCreationArgs: 
     description: 'Provide additional params during service creation'
-    default: 'No additionalServiceCreationArgs provided'
+    default: ''
     required: false    
 runs:
   using: "composite"
