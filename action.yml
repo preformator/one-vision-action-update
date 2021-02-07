@@ -28,6 +28,8 @@ runs:
                 echo "Please Update builder pipeline... !!!"
                 echo $PIPELINE_RESULT
                 exit 1
+            else
+              echo -e "\033[33mBuilder image is up to date, proceeding...\033[0m"
             fi
         else
           echo -e "\033[33mBuilder image not provided, skipping package verifier...\033[0m"
