@@ -9,7 +9,7 @@ inputs:
     required: true
   builderImage: 
     description: 'builderImage name'
-    default: 'No builderImage provided'
+    default: ''
     required: false
   additionalServiceCreationArgs: 
     description: 'Provide additional params during service creation'
