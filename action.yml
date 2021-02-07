@@ -53,7 +53,8 @@ runs:
             docker service update $SERVICE_NAME --image localhost:5000/$DOCKER_IMAGE
         else
             echo "Service is not running, creating new one..."
-            docker service create --with-registry-auth --name $SERVICE_NAME --network=host ${{ inputs.additionalServiceCreationArgs }} localhost:5000/$DOCKER_IMAGE
+            CMD="docker service create --with-registry-auth --name $SERVICE_NAME --network=host ${{ inputs.additionalServiceCreationArgs }} localhost:5000/$DOCKER_IMAGE"
+            eval $CMD
         fi
         
         echo "Completed."
