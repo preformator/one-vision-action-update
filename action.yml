@@ -45,7 +45,7 @@ runs:
             docker service update $SERVICE_NAME --image localhost:5000/$DOCKER_IMAGE
         else
             echo "Service is not running, creating new one..."
-            docker service create --with-registry-auth --name builder_gatsby --network=host localhost:5000/builder_gatsby:latest
+            docker service create --with-registry-auth --name $SERVICE_NAME --network=host localhost:5000/$DOCKER_IMAGE
         fi
         
         echo "Completed."
