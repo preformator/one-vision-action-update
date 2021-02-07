@@ -29,6 +29,8 @@ runs:
                 echo $PIPELINE_RESULT
                 exit 1
             fi
+        else
+          echo -e "\033[33mBuilder image not provided, skipping package verifier...\033[0m"
         fi
 
         SERVICE_NAME=${{ inputs.name }}
