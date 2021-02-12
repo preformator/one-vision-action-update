@@ -1,50 +1,28 @@
 inputs:
   name: 
-    description: 'Your name'
-    default: 'No name provided'
+    description: 'Service name'
+    default: 'No service name provided'
     required: true
-  branch: 
-    description: 'branch name'
-    default: 'No branch provided'
-    required: true
-  builderImage: 
-    description: 'builderImage name'
+  buildArgs: 
+    description: 'Docker build arguments'
     default: ''
     required: false
-  additionalServiceCreationArgs: 
+  additionalServiceCreationArgs:
     description: 'Provide additional params during service creation'
     default: ''
-    required: false    
+    required: false
 runs:
   using: "composite"
   
   steps: 
     - name: Check if builder image is up to date with deps from the repo
       run: |
-        BUILDER_IMAGE=${{ inputs.builderImage }}
-
-        if test $BUILDER_IMAGE; then
-            echo "Checking if builder image is up to date with deps from the repo..."
-
-            PIPELINE_RESULT=$(curl -F 'data=@package.json' http://34.91.15.31:1000/check?name=$BUILDER_IMAGE)
-
-            if test $PIPELINE_RESULT; then
-                echo "Please Update builder pipeline... !!!"
-                echo $PIPELINE_RESULT
-                exit 1
-            else
-              echo -e "\033[33mBuilder image is up to date, proceeding...\033[0m"
-            fi
-        else
-          echo -e "\033[33mBuilder image not provided, skipping package verifier...\033[0m"
-        fi
-
         SERVICE_NAME=${{ inputs.name }}
         DOCKER_IMAGE="$SERVICE_NAME:latest"
 
         echo "Service update is running for $SERVICE_NAME - $DOCKER_IMAGE"
 
-        docker build --build-arg branch=${{ inputs.branch }} -t $SERVICE_NAME .
+        docker build ${{ inputs.buildArgs }} -t $SERVICE_NAME .
         docker tag $SERVICE_NAME localhost:5000/$DOCKER_IMAGE
         docker push localhost:5000/$DOCKER_IMAGE
 
@@ -56,7 +34,6 @@ runs:
             CMD="docker service create --with-registry-auth --name $SERVICE_NAME ${{ inputs.additionalServiceCreationArgs }} localhost:5000/$DOCKER_IMAGE"
             
             echo $CMD
-            
             eval $CMD
         fi
         
